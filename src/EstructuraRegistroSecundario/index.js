@@ -4,26 +4,18 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import './EstructuraIndices.css';
+import './EstructuraRegistros.css';
 
-function EstructuraIndices({ ids  }) {
+function EstructuraRegistrosSecundario({ ids }) {
   const { id1, id2 } = ids;
-
   const {
     registros
   } = React.useContext(IndexContext);
-  const [indicesPorBloque, setindicesPorBloque] = React.useState(0);
-  const [cantidadBloques, setCantidadBloques] = React.useState(0);
+  const [numRegistros, setnumRegistros] = React.useState(0);
 
   const calcularValores = () => {
     if (registros) {
-      const registrosPorBloque = Math.floor(registros.tamBloque / registros.longitudRegistros);
-      const numeroIndices = Math.ceil(registros.numRegistros / registrosPorBloque);
-      const indicesPorBloque = Math.floor(registros.tamBloque / registros.longitudIndice);
-      const cantidadBloques = Math.ceil(numeroIndices / indicesPorBloque);
-
-      setindicesPorBloque(indicesPorBloque);
-      setCantidadBloques(cantidadBloques);
+      setnumRegistros(registros.numRegistros);
     }
   };
 
@@ -35,25 +27,11 @@ function EstructuraIndices({ ids  }) {
     <>
       <Container>
         <Row>
-        <Col xs={4}>
-            <Table bordered striped="columns">
-              <thead>
-                <tr>
-                  <th>Indices</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> {indicesPorBloque} por bloque</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
           <Col>
             <Table bordered striped="columns">
               <thead>
                 <tr>
-                  <th># Bloque</th>
+                  <th># Registro</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +48,7 @@ function EstructuraIndices({ ids  }) {
                   <td  className='dot-container'><div className='dots'></div></td>
                 </tr>
                 <tr>
-                  <td id={id2}>{cantidadBloques}</td>
+                  <td id={id2}>{numRegistros}</td>
                 </tr>
               </tbody>
             </Table>
@@ -81,5 +59,4 @@ function EstructuraIndices({ ids  }) {
   );
 }
 
-
-export { EstructuraIndices };
+export { EstructuraRegistrosSecundario };

@@ -29,6 +29,8 @@ function UserProvider({ children }) {
       "numRegistros": numRegistros,
       "longitudRegistros": longitudRegistros,
       "tamBloque": tamBloque,
+      "longitudIndice": longitudIndice,
+      "tipoIndice":tipoIndice,
 
     };
     saveregistros(registro);

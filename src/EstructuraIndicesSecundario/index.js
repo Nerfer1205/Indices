@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './EstructuraIndices.css';
 
-function EstructuraIndices({ ids  }) {
+function EstructuraIndicesSecundario({ ids  }) {
   const { id1, id2 } = ids;
 
   const {
@@ -17,10 +17,8 @@ function EstructuraIndices({ ids  }) {
 
   const calcularValores = () => {
     if (registros) {
-      const registrosPorBloque = Math.floor(registros.tamBloque / registros.longitudRegistros);
-      const numeroIndices = Math.ceil(registros.numRegistros / registrosPorBloque);
-      const indicesPorBloque = Math.floor(registros.tamBloque / registros.longitudIndice);
-      const cantidadBloques = Math.ceil(numeroIndices / indicesPorBloque);
+      const indicesPorBloque = Math.round(registros.tamBloque / registros.longitudIndice);
+      const cantidadBloques = Math.round(registros.numRegistros / indicesPorBloque);
 
       setindicesPorBloque(indicesPorBloque);
       setCantidadBloques(cantidadBloques);
@@ -82,4 +80,4 @@ function EstructuraIndices({ ids  }) {
 }
 
 
-export { EstructuraIndices };
+export { EstructuraIndicesSecundario };

@@ -4,14 +4,29 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { RowRender } from './RowRender';
+import './EstructuraRegistros.css';
 
-function EstructuraRegistros({ id }) {
+function EstructuraRegistros({ ids }) {
+  const { id1, id2 } = ids;
   const {
     registros
   } = React.useContext(IndexContext);
-  const [registrosPorBloque, setRegistrosPorBloque] = React.useState(Math.round(registros.tamBloque / registros.longitudRegistros));
-  const [cantidadBloques, setCantidadBloques] = React.useState(Math.round(registros.numRegistros / registrosPorBloque));
+  const [registrosPorBloque, setRegistrosPorBloque] = React.useState(0);
+  const [cantidadBloques, setCantidadBloques] = React.useState(0);
+
+  const calcularValores = () => {
+    if (registros) {
+      const registrosPorBloque = Math.floor(registros.tamBloque / registros.longitudRegistros);
+      const cantidadBloques = Math.ceil(registros.numRegistros / registrosPorBloque);
+
+      setRegistrosPorBloque(registrosPorBloque);
+      setCantidadBloques(cantidadBloques);
+    }
+  };
+
+  React.useEffect(() => {
+    calcularValores();
+  }, [registros]);
 
   return (
     <>
@@ -21,12 +36,24 @@ function EstructuraRegistros({ id }) {
             <Table bordered striped="columns">
               <thead>
                 <tr>
-                  <th>#. Bloque</th>
+                  <th># Bloque</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td id={id}>1</td>
+                  <td id={id1}>1</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td >3</td>
+                </tr>
+                <tr>
+                  <td  className='dot-container'><div className='dots'></div></td>
+                </tr>
+                <tr>
+                  <td id={id2}>{cantidadBloques}</td>
                 </tr>
               </tbody>
             </Table>
@@ -40,21 +67,7 @@ function EstructuraRegistros({ id }) {
               </thead>
               <tbody>
                 <tr>
-                  <td >Mark</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
-          <Col>
-            <Table borderless striped="columns">
-              <thead>
-                <tr>
-                  <th>#. registro</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
+                  <td> {registrosPorBloque} por bloque</td>
                 </tr>
               </tbody>
             </Table>
