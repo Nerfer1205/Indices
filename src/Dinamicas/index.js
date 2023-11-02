@@ -6,10 +6,78 @@ function Dinamicas(props) {
     const [cubetas, setCubetas] = useState(props.cubetas);
     const [registros, setRegistros] = useState(props.registros);
     const [valorInput, setValorInput] = useState('');
+    const [matrizTemp, setMatrizTemp] = useState([]);
+    const [matrizTempE, setMatrizTempE] = useState([]);
+    const [keyM, setKeyM] = useState('');
 
     useEffect(() => {
+        
         setEstructura(Array.from({ length: cubetas }, () => Array.from({ length: registros }, () => -1)));
-    }, [cubetas, registros]);
+    }, [registros]);
+
+    useEffect(() => {
+        
+        if(matrizTemp.length > 0){
+            // Se transforma nuevamente en la original
+            for (let i = 0; i < cubetas; i++) {
+                for (let j = 0; j < registros; j++) {
+                    if (matrizTemp[i] && matrizTemp[i][j] !== -1) {
+                        const key = matrizTemp[i][j];
+                        const insercion = insert(key);
+                        if (!insercion && !matrizLlena()) {
+                            console.log("colisión");
+                        }
+                    }
+                }
+            }
+            let cubeta;
+            const key = keyM;
+            switch (props.hash) {
+                case 1:
+                    cubeta = hashMod(key, cubetas);
+                    break;
+                case 2:
+                    cubeta = hashCuadrado(key, cubetas);
+                    break;
+                case 3:
+                    cubeta = hashTrunc(key, cubetas);
+                    break;
+                case 4:
+                    cubeta = hashPleg(key, cubetas);
+                    break;
+            }
+
+            let insertado = false;
+            for (let i = 0; i < registros; i++) {
+                if (estructura[cubeta][i] === -1) {
+                    estructura[cubeta][i] = key;
+                    insertado = true;
+                    break;
+                }
+            }
+            setMatrizTemp([]);
+        }
+        
+
+    }, [matrizTemp]);
+
+    useEffect(() => {
+        if(matrizTempE.length > 0){
+            for (let i = 0; i < (cubetas * 2); i++) {
+                for (let j = 0; j < registros; j++) {
+                    if (matrizTempE[i] && matrizTempE[i][j] !== -1) {
+                        const insercion = insert(matrizTempE[i][j]);
+                        if (!insercion && !matrizLlena()) {
+                            console.log("colisión");
+                        }
+                    }
+                }
+            }
+
+            // Actualiza la matriz con los nuevos valores
+            //setEstructura(matrizTempE);
+        }
+    }, [matrizTempE]);
 
     const hashMod = (key, tam) => {
         return key % tam;
@@ -72,13 +140,13 @@ function Dinamicas(props) {
     };
 
     const expandir = () => {
-        const matrizTemp = estructura.map((cubeta) => cubeta.slice());
+        const matrizTemp_int = [...estructura.map((cubeta) => cubeta.slice())];
     
         // Duplica la matriz en la temporal
         for (let i = 0; i < cubetas; i++) {
             for (let j = 0; j < registros; j++) {
-                if (matrizTemp[i][j] !== -1) {
-                    matrizTemp[i][j] = estructura[i][j];
+                if (matrizTemp_int[i][j] !== -1) {
+                    matrizTemp_int[i][j] = estructura[i][j];
                 }
             }
         }
@@ -86,57 +154,31 @@ function Dinamicas(props) {
         // Actualiza la cantidad de cubetas después de expandir
         const newCubetas = cubetas * 2;
         setCubetas(newCubetas);
-    
-        // Se transforma nuevamente en la original
-        for (let i = 0; i < newCubetas; i++) {
-            for (let j = 0; j < registros; j++) {
-                if (matrizTemp[i] && matrizTemp[i][j] !== -1) {
-                    const key = matrizTemp[i][j];
-                    const insercion = insert(key);
-                    if (!insercion && !matrizLlena()) {
-                        console.log("colisión");
-                    }
-                }
-            }
-        }
+        setEstructura(Array.from({ length: newCubetas }, () => Array.from({ length: registros }, () => -1)));
+        setMatrizTemp(matrizTemp_int);
+        
     }
     
 
     const reducir = () => {
-        const matrizTemp = estructura.map((cubeta) => cubeta.slice());
+        const matrizETemp = [...estructura.map((cubeta) => cubeta.slice())];
 
         // Duplica la matriz en la temporal
         for (let i = 0; i < cubetas; i++) {
             for (let j = 0; j < registros; j++) {
-                if (matrizTemp[i][j] !== -1) {
-                    matrizTemp[i][j] = estructura[i][j];
+                if (matrizETemp[i][j] !== -1) {
+                    matrizETemp[i][j] = estructura[i][j];
                 }
             }
         }
 
-        // Se limpia la original
-        for (let i = 0; i < cubetas; i++) {
-            for (let j = 0; j < registros; j++) {
-                estructura[i][j] = -1;
-            }
-        }
-
+        
         // Se transforma nuevamente en la original
-        setCubetas(cubetas / 2);
-
-        for (let i = 0; i < cubetas; i++) {
-            for (let j = 0; j < registros; j++) {
-                if (matrizTemp[i] && matrizTemp[i][j] !== -1) {
-                    const insercion = insert(matrizTemp[i][j]);
-                    if (!insercion && !matrizLlena()) {
-                        console.log("colisión");
-                    }
-                }
-            }
-        }
-
-        // Actualiza la matriz con los nuevos valores
-        setEstructura(matrizTemp);
+        const newCubetas = cubetas / 2;
+        setCubetas(newCubetas);
+        setEstructura(Array.from({ length: newCubetas }, () => Array.from({ length: registros }, () => -1)));
+        setMatrizTempE(matrizETemp)
+        
     };
 
     const search = (key) => {
@@ -186,7 +228,7 @@ function Dinamicas(props) {
 
     const insert = (key) => {
         let repetido;
-
+        setKeyM(key);
         do {
             // Verificar si la clave ya está repetida
             repetido = search(key);
