@@ -15,6 +15,9 @@ function NavBar() {
       <Nav.Item>
         <Nav.Link href="dinamicas">Dinamicas</Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="dinamicasparciales">Dinamicas parciales</Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 }

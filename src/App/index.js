@@ -4,6 +4,8 @@ import { FormIndices } from '../pages/form';
 import { Home } from '../pages';
 import { Steps } from '../pages/renderSteps';
 import { DinamicasRender } from '../pages/dinamicas';
+import { DinamicasRenderParciales } from '../pages/dinamicasParciales';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,6 +36,10 @@ function App(){
           <Route
             path="/dinamicas"
             element={<DinamicasRender />}
+          />
+          <Route
+            path="/dinamicasparciales"
+            element={<DinamicasRenderParciales />}
           />
         </Routes>
       </Router>
