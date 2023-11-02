@@ -5,12 +5,13 @@ import { EstructuraIndices } from '../EstructuraIndices';
 import { EstructuraIndicesSecundario } from '../EstructuraIndicesSecundario';
 import { EstructuraRegistrosSecundario } from '../EstructuraRegistroSecundario';
 import { MultinivelPrimario } from '../MultinivelPrimario';
+import { MultinivelSecundario } from '../MultinivelSecundario';
 import { IndexContext } from '../IndexContext';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function Steps() {
+function Steps({ children }) {
   const { registros } = React.useContext(IndexContext);
   const [opcionIndice, setOpcionIndice] = React.useState(0);
 
@@ -41,10 +42,17 @@ function Steps() {
                 </>
               )}
               {opcionIndice === '3' && (
+
                 <MultinivelPrimario />
               )}
+              {opcionIndice === '4' && (
+
+                <MultinivelSecundario />
+              )}
             </Col>
-            <Col xs={4}></Col>
+            {(opcionIndice === '1' || opcionIndice === '2') && (
+              <Col xs={4}></Col>
+            )}
             <Col>
               {opcionIndice === '1' && (
                 <>
@@ -61,7 +69,10 @@ function Steps() {
                 </>
               )}
               {opcionIndice === '3' && (
-                <EstructuraRegistros ids={{ id1: 'elem3', id2: 'elem4' }} />
+                <EstructuraRegistros ids={{ id1: 'elem3mp', id2: 'elem4mp' }} />
+              )}
+              {opcionIndice === '4' && (
+                <EstructuraRegistrosSecundario ids={{ id1: 'elem3ms', id2: 'elem4ms' }} />
               )}
             </Col>
           </Row>

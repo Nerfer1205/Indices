@@ -5,9 +5,9 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import './MultinivelPrimario.css';
+import './MultinivelSecundario.css';
 
-function MultinivelPrimario() {
+function MultinivelSecundario() {
   const [bloquesPorNivel, setBloquesPorNivel] = useState([]);
   const [ids, setIds] = useState([]);
   const [estructuras, setEstructuras] = useState([]); // Usar un estado para estructuras
@@ -23,17 +23,16 @@ function MultinivelPrimario() {
 
   useEffect(() => {
     if (registros && indicesPorBloque!==0) {
-      const registrosPorBloque = Math.floor(registros.tamBloque / registros.longitudRegistros);
-      const numeroIndices = Math.ceil(registros.numRegistros / registrosPorBloque);
       setIndicesPorBloque(Math.floor(registros.tamBloque / registros.longitudIndice));
-      const cantidadBloques = Math.ceil(numeroIndices / indicesPorBloque);
-      const niveles = Math.ceil(Math.log(numeroIndices) / Math.log(indicesPorBloque));
+      const cantidadBloques = Math.ceil(registros.numRegistros  / indicesPorBloque);
+      const niveles = Math.ceil(Math.log(registros.numRegistros) / Math.log(indicesPorBloque));
 
-      const bloquesPorNivel = [];
-      for (let i = 0; i < niveles; i++) {
-        bloquesPorNivel.push(Math.ceil(cantidadBloques / (indicesPorBloque ** i)));
+      const bloquesPorNivel = [cantidadBloques];
+      for (let i = 1; i < niveles; i++) {
+        bloquesPorNivel.push(Math.ceil(bloquesPorNivel[i-1] / indicesPorBloque ));
+        console.log(i)
+        console.log(Math.ceil(bloquesPorNivel[i-1]),indicesPorBloque)
       }
-      console.log(bloquesPorNivel) 
       setBloquesPorNivel(bloquesPorNivel);
     }
   }, [registros, indicesPorBloque]);
@@ -213,10 +212,10 @@ function MultinivelPrimario() {
       ); 
     }
     arrows.push(
-      <Xarrow key={`arrow-${(ids.length / 2)+1}`} start={ids[0]} end='elem3mp' />
+      <Xarrow key={`arrow-${(ids.length / 2)+1}`} start={ids[0]} end='elem3ms' />
     );
     arrows.push(
-      <Xarrow key={`arrow-${(ids.length / 2)+2}`} start={ids[1]} end='elem4mp' />
+      <Xarrow key={`arrow-${(ids.length / 2)+2}`} start={ids[1]} end='elem4ms' />
     );
     setArrows(arrows); // Actualizar el estado de estructuras 
   }
@@ -237,4 +236,4 @@ function MultinivelPrimario() {
   );
 }
 
-export { MultinivelPrimario };
+export { MultinivelSecundario };
