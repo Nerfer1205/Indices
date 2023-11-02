@@ -12,6 +12,9 @@ function NavBar() {
       <Nav.Item>
         <Nav.Link href="indices">Ver indices</Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="dinamicas">Dinamicas</Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 }

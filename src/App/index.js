@@ -3,6 +3,7 @@ import { NavBar } from '../NavBar';
 import { FormIndices } from '../pages/form';
 import { Home } from '../pages';
 import { Steps } from '../pages/renderSteps';
+import { DinamicasRender } from '../pages/dinamicas';
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +12,7 @@ import {
 import { IndexContext } from '../IndexContext';
 import { Modal } from '../Modal';
 import { Message } from '../Message';
+
 
 import './App.css';
 
@@ -28,6 +30,10 @@ function App(){
           <Route
             path="/indices"
             element={<Steps />}
+          />
+          <Route
+            path="/dinamicas"
+            element={<DinamicasRender />}
           />
         </Routes>
       </Router>

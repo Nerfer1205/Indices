@@ -15,23 +15,23 @@ function MultinivelSecundario() {
   const [indicesPorBloque, setIndicesPorBloque] = useState(0);
   var { registros } = React.useContext(IndexContext);
 
-  useEffect(()=>{
-    if(registros){
+  useEffect(() => {
+    if (registros) {
       setIndicesPorBloque(Math.floor(registros.tamBloque / registros.longitudIndice));
     }
-  },[])
+  }, []);
 
   useEffect(() => {
-    if (registros && indicesPorBloque!==0) {
+    if (registros && indicesPorBloque !== 0) {
       setIndicesPorBloque(Math.floor(registros.tamBloque / registros.longitudIndice));
-      const cantidadBloques = Math.ceil(registros.numRegistros  / indicesPorBloque);
+      const cantidadBloques = Math.ceil(registros.numRegistros / indicesPorBloque);
       const niveles = Math.ceil(Math.log(registros.numRegistros) / Math.log(indicesPorBloque));
 
       const bloquesPorNivel = [cantidadBloques];
       for (let i = 1; i < niveles; i++) {
-        bloquesPorNivel.push(Math.ceil(bloquesPorNivel[i-1] / indicesPorBloque ));
+        bloquesPorNivel.push(Math.ceil(bloquesPorNivel[i - 1] / indicesPorBloque));
         console.log(i)
-        console.log(Math.ceil(bloquesPorNivel[i-1]),indicesPorBloque)
+        console.log(Math.ceil(bloquesPorNivel[i - 1]), indicesPorBloque)
       }
       setBloquesPorNivel(bloquesPorNivel);
     }
@@ -87,21 +87,53 @@ function MultinivelSecundario() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td id={ids[indice]}>1</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                    </tr>
-                    <tr>
-                      <td className='dot-container'><div className='dots'></div></td>
-                    </tr>
-                    <tr>
-                      <td id={ids[indice + 1]}>{bloquesPorNivel[i]}</td>
-                    </tr>
+                    {(bloquesPorNivel[i] === 1) && (
+                      <tr>
+                        <td id={ids[indice]}>1</td>
+                      </tr>
+                    )}
+                    {(bloquesPorNivel[i] === 2) && (
+                      <>
+                        <tr>
+                          <td id={ids[indice]}>1</td>
+                        </tr>
+                        <tr>
+                          <td id={ids[indice + 1]}>2</td>
+                        </tr>
+                      </>
+                    )}
+                    {(bloquesPorNivel[i] === 3) && (
+                      <>
+                        <tr>
+                          <td id={ids[indice]}>1</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                        </tr>
+                        <tr>
+                          <td id={ids[indice + 1]}>3</td>
+                        </tr>
+                      </>
+                    )}
+                    {(bloquesPorNivel[i] > 3) && (
+                      <>
+                        <tr>
+                          <td id={ids[indice]}>1</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                        </tr>
+                        <tr>
+                          <td className='dot-container'><div className='dots'></div></td>
+                        </tr>
+                        <tr>
+                          <td id={ids[indice + 1]}>{bloquesPorNivel[i]}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </Table>
               </Col>
@@ -121,16 +153,35 @@ function MultinivelSecundario() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td id={ids[indice]}>1</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                    </tr>
-                    {(bloquesPorNivel[i - 1] !== indicesPorBloque) && (
+                    {(bloquesPorNivel[i - 1] === 1) && (
+                      <tr>
+                        <td id={ids[indice]}>1</td>
+                      </tr>
+                    )}
+                    {(bloquesPorNivel[i - 1] === 2) && (
+                      <>
+                        <tr>
+                          <td id={ids[indice]}>1</td>
+                        </tr>
+                        <tr>
+                          <td id={ids[indice + 1]}>2</td>
+                        </tr>
+                      </>
+                    )}
+                    {(bloquesPorNivel[i - 1] === 3) && (
+                      <>
+                        <tr>
+                          <td id={ids[indice]}>1</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                        </tr>
+                        <tr>
+                          <td id={ids[indice + 1]}>3</td>
+                        </tr>
+                      </>
+                    )}
+                    {(bloquesPorNivel[i - 1] !== indicesPorBloque) && (bloquesPorNivel[i - 1] > 3) && (
                       <>
                         <tr>
                           <td className='dot-container'><div className='dots'></div></td>
@@ -142,11 +193,21 @@ function MultinivelSecundario() {
                           <td className='dot-container'><div className='dots'></div></td>
                         </tr>
                         <tr>
-                          <td>{indicesPorBloque}</td> 
+                          <td>{indicesPorBloque}</td>
                         </tr>
-                      </> 
+                      </>
                     )}
-                    {(bloquesPorNivel[i - 1] === indicesPorBloque) && (
+                    {(bloquesPorNivel[i - 1] !== indicesPorBloque) && (bloquesPorNivel[i - 1] <= 3) && (
+                      <>
+                        <tr>
+                          <td className='dot-container'><div className='dots'></div></td>
+                        </tr>
+                        <tr>
+                          <td>{indicesPorBloque}</td>
+                        </tr>
+                      </>
+                    )}
+                    {(bloquesPorNivel[i - 1] === indicesPorBloque) && (bloquesPorNivel[i - 1] > 3) && (
                       <>
                         <tr>
                           <td className='dot-container'><div className='dots'></div></td>
@@ -206,16 +267,18 @@ function MultinivelSecundario() {
 
   const aniadirFlechas = () => {
     const arrows = [];
-    for (let i = 0; i < ids.length / 2; i++) {
+    for (let i = 0; i < ids.length - 2; i++) {
+      console.log(ids.length, ids.length / 2)
+      console.log(ids[i + 2], ids[i], i);
       arrows.push(
         <Xarrow key={`arrow-${i}`} start={ids[i + 2]} end={ids[i]} />
-      ); 
+      );
     }
     arrows.push(
-      <Xarrow key={`arrow-${(ids.length / 2)+1}`} start={ids[0]} end='elem3ms' />
+      <Xarrow key={`arrow-${(ids.length / 2) + 1}`} start={ids[0]} end='elem3ms' />
     );
     arrows.push(
-      <Xarrow key={`arrow-${(ids.length / 2)+2}`} start={ids[1]} end='elem4ms' />
+      <Xarrow key={`arrow-${(ids.length / 2) + 2}`} start={ids[1]} end='elem4ms' />
     );
     setArrows(arrows); // Actualizar el estado de estructuras 
   }
@@ -224,7 +287,7 @@ function MultinivelSecundario() {
     <Xwrapper>
       <Container>
         <Row>
-          {estructuras.map((estructura, index) => ( 
+          {estructuras.map((estructura, index) => (
             <Col key={index}>
               {estructura}
             </Col>
