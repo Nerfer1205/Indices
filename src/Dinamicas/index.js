@@ -9,6 +9,7 @@ function Dinamicas(props) {
     const [matrizTemp, setMatrizTemp] = useState([]);
     const [matrizTempE, setMatrizTempE] = useState([]);
     const [keyM, setKeyM] = useState('');
+    const [mensajeError, setMensajeError] = useState('');
 
     useEffect(() => {
         
@@ -233,7 +234,8 @@ function Dinamicas(props) {
             // Verificar si la clave ya está repetida
             repetido = search(key);
             if (repetido) {
-                // Lógica para ingresar una clave diferente en React
+                setMensajeError('Esta clave ya fue insertada');
+                return false;
             }
         } while (repetido);
 
@@ -269,13 +271,25 @@ function Dinamicas(props) {
         return insertado;
     };
 
+    const contarDigitos = (numero) => {
+        // Convierte el número a cadena y calcula la longitud
+        var cantidadDigitos = numero.toString().length;
+        return cantidadDigitos;
+    }
+
     const handleInsert = () => {
         const valor = parseInt(valorInput);
-        if (!isNaN(valor)) {
-            insert(valor);
-            setValorInput(''); // Limpiar el input
-        } else {
-            alert('Por favor, ingresa un valor numérico válido.');
+        setMensajeError("");
+        if (contarDigitos(valor) !== props.digitos) {
+            setMensajeError("Esta clave no tiene la cantidad de digitos correcta");
+        }else{
+            setMensajeError("");
+            if (!isNaN(valor)) {
+                insert(valor);
+                setValorInput(''); // Limpiar el input
+            } else {
+                setMensajeError('Por favor, ingresa un valor numérico válido.');
+            }
         }
     };
 
@@ -286,10 +300,10 @@ function Dinamicas(props) {
             if (eliminar(valor)) {
                 setValorInput(''); // Limpiar el input
             } else {
-                alert(`El valor ${valor} no se encontró en la estructura.`);
+                setMensajeError(`El valor ${valor} no se encontró en la estructura.`);
             }
         } else {
-            alert('Por favor, ingresa un valor numérico válido.');
+            setMensajeError('Por favor, ingresa un valor numérico válido.');
         }
     };
 
@@ -336,6 +350,7 @@ function Dinamicas(props) {
     return (
         <div>
             {renderizarEstructura()}
+            <p style={{color: "red"}}>{mensajeError}</p>
         </div>
     );
 }

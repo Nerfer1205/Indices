@@ -8,6 +8,7 @@ const DinamicasRender = () => {
     densidadOcupacion: 70, // Reemplaza con el valor deseado
     densidadReduccion: 30, // Reemplaza con el valor deseado
     hash: 1, // Reemplaza con el valor deseado
+    digitos: 3
   };
 
   return (

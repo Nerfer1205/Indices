@@ -9,6 +9,7 @@ function DinamicasParciales(props) {
     const [matrizTemp, setMatrizTemp] = useState([]);
     const [matrizTempE, setMatrizTempE] = useState([]);
     const [keyM, setKeyM] = useState('');
+    const [mensajeError, setMensajeError] = useState('');
 
     useEffect(() => {
         
@@ -233,7 +234,8 @@ function DinamicasParciales(props) {
             // Verificar si la clave ya está repetida
             repetido = search(key);
             if (repetido) {
-                // Lógica para ingresar una clave diferente en React
+                setMensajeError('Esta clave ya fue insertada');
+                return false;
             }
         } while (repetido);
 
@@ -268,14 +270,26 @@ function DinamicasParciales(props) {
 
         return insertado;
     };
-
+    
+    const contarDigitos = (numero) => {
+        // Convierte el número a cadena y calcula la longitud
+        var cantidadDigitos = numero.toString().length;
+        return cantidadDigitos;
+    }
+    
     const handleInsert = () => {
         const valor = parseInt(valorInput);
-        if (!isNaN(valor)) {
-            insert(valor);
-            setValorInput(''); // Limpiar el input
-        } else {
-            alert('Por favor, ingresa un valor numérico válido.');
+        setMensajeError("");
+        if (contarDigitos(valor) !== props.digitos) {
+            setMensajeError("Esta clave no tiene la cantidad de digitos correcta");
+        }else{
+            setMensajeError("");
+            if (!isNaN(valor)) {
+                insert(valor);
+                setValorInput(''); // Limpiar el input
+            } else {
+                setMensajeError('Por favor, ingresa un valor numérico válido.');
+            }
         }
     };
 
@@ -336,6 +350,7 @@ function DinamicasParciales(props) {
     return (
         <div>
             {renderizarEstructura()}
+            <p style={{color: "red"}}>{mensajeError}</p>
         </div>
     );
 }
